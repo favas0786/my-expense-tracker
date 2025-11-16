@@ -1,0 +1,1022 @@
+/* src/App.css */
+
+/* --- 1. Root Variables (Theme) --- */
+/* src/App.css */
+
+/* --- 1. Root Variables (Theme) --- */
+:root {
+  /* Define the base colors */
+  --c-text: #2c3e50;
+  --c-text-light: #7f8c8d;
+  --c-bg: #f4f7f6;
+  --c-surface: #ffffff;
+  --c-border: #ecf0f1;
+  
+  /* Shared colors */
+  --c-primary: #3498db;
+  --c-primary-dark: #2980b9;
+  --c-income: #2ecc71;
+  --c-expense: #e74c3c;
+  --c-delete: #c0392b;
+
+  /* CSS variables for our theme */
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --color-text: var(--c-text);
+  --color-text-light: var(--c-text-light);
+  --color-bg: var(--c-bg);
+  --color-surface: var(--c-surface);
+  --color-border: var(--c-border);
+  --color-primary: var(--c-primary);
+  --color-primary-dark: var(--c-primary-dark);
+  --color-income: var(--c-income);
+  --color-expense: var(--c-expense);
+  --color-delete: var(--c-delete);
+  
+  --shadow-light: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-medium: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --border-radius: 8px;
+}
+
+/* Dark theme variables applied when body has .dark */
+/* --- 1a. Dark Mode Variables --- */
+body.dark {
+  /* Define dark mode base colors */
+  --c-text: #ecf0f1;       /* Light text */
+  --c-text-light: #95a5a6;  /* Lighter text */
+  --c-bg: #2c3e50;         /* Dark background */
+  --c-surface: #34495e;    /* Darker surface (cards) */
+  --c-border: #4a657c;     /* Lighter border */
+
+  /* Re-map our theme variables */
+  --color-text: var(--c-text);
+  --color-text-light: var(--c-text-light);
+  --color-bg: var(--c-bg);
+  --color-surface: var(--c-surface);
+  --color-border: var(--c-border);
+  
+  /* Update shadow for dark mode */
+  --shadow-light: 0 1px 3px rgba(0, 0, 0, 0.2);
+  --shadow-medium: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+.header-actions {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  gap: 10px; /* This creates space between the buttons */
+}
+/* --- 12. Theme Toggle Button --- */
+.theme-toggle-btn {
+  position: relative; 
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow-light);
+}
+
+.theme-toggle-btn:hover {
+  background-color: var(--color-bg);
+  transform: scale(1.1);
+  box-shadow: var(--shadow-medium);
+  color: var(--color-primary);
+}
+
+.theme-toggle-btn:active {
+  transform: scale(0.95);
+}
+
+.theme-toggle-btn svg {
+  transition: transform 0.3s ease;
+  color: inherit;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  width: 20px;
+  height: 20px;
+  display: block;
+  flex-shrink: 0;
+}
+
+.theme-toggle-btn:hover svg {
+  transform: rotate(15deg);
+}
+/* --- 2. Global Resets & Body --- */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  display: flex;
+  justify-content: center;
+  padding: 30px 15px;
+  min-height: 100vh;
+}
+
+h1, h2, h3 {
+  margin-top: 0;
+  margin-bottom: 0.75em;
+  font-weight: 600;
+}
+
+/* --- 3. App Container --- */
+.app-container {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+header h1 {
+  font-size: 2.25rem;
+  color: var(--color-text);
+  margin: 0;
+}
+
+/* Header layout: title + theme toggle */
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.app-header h1 {
+  flex: 1 1 auto;
+}
+
+/* Smooth theme transition for key surfaces */
+body, .app-container, .transaction-form, .transaction-list, .expense-chart-container {
+  transition: background-color 0.22s ease, color 0.22s ease, border-color 0.22s ease;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 24px; /* Creates space between all main sections */
+}
+
+/* --- 4. Card Styling for all sections --- */
+.balance,
+.transaction-form,
+.transaction-list,
+.expense-chart-container {
+  background: var(--color-surface);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  box-shadow: var(--shadow-medium);
+}
+
+/* --- 5. Balance Component --- */
+.balance h2 {
+  font-size: 1rem;
+  color: var(--color-text-light);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.balance h3 {
+  font-size: 2.5rem;
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.balance h3.income {
+  color: var(--color-income);
+}
+.balance h3.expense {
+  color: var(--color-expense);
+}
+
+/* --- 6. Form Component --- */
+.transaction-form h3 {
+  font-size: 1.25rem;
+  border-bottom: 2px solid var(--color-border);
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+/* This is the container for a label and its input */
+.form-control {
+  margin-bottom: 18px;
+}
+
+/* This styles the "Description", "Amount", "Category" labels */
+.form-control label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--color-text-light);
+}
+
+/* This styles the input boxes and dropdown */
+.form-control input,
+.form-control select {
+  width: 100%;
+  padding: 14px;
+  font-size: 1rem;
+  background-color: var(--color-bg);
+  border: 2px solid var(--color-bg);
+  border-radius: 6px;
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s, color 0.2s;
+  /* Ensure the typed text is visible (fix for invisible numbers) */
+  color: var(--color-text) !important;
+  -webkit-text-fill-color: var(--color-text) !important;
+}
+
+/* This adds the blue "glow" when you click on an input */
+.form-control input:focus,
+.form-control select:focus {
+  outline: none;
+  background-color: var(--color-surface);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+  color: var(--color-text) !important;
+  -webkit-text-fill-color: var(--color-text) !important;
+}
+
+/* Ensure input text is visible when typing */
+.form-control input::placeholder {
+  color: var(--color-text-light);
+  opacity: 0.6;
+  -webkit-text-fill-color: var(--color-text-light);
+}
+
+/* Dark mode specific input fixes */
+body.dark .form-control input,
+body.dark .form-control select {
+  background-color: var(--color-bg);
+  color: var(--color-text) !important;
+  -webkit-text-fill-color: var(--color-text) !important;
+}
+
+body.dark .form-control input:focus,
+body.dark .form-control select:focus {
+  background-color: var(--color-surface);
+  color: var(--color-text) !important;
+  -webkit-text-fill-color: var(--color-text) !important;
+}
+
+button[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background-color: var(--color-primary);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+button[type="submit"]:hover {
+  background-color: var(--color-primary-dark);
+}
+
+/* --- 7. Transaction List Component --- */
+.transaction-list ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  
+  /* --- NEW LINES --- */
+  /* This is the key to the "no scroll" page. */
+  /* The list will scroll, but the page won't. */
+  max-height: 80vh; /* Adjust this height as you like */
+  overflow-y: auto;
+  padding-right: 5px; /* Adds space for the scrollbar */
+}
+
+.transaction-list li {
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 14px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  border-right-width: 5px;
+  transition: box-shadow 0.2s ease, transform 0.2s ease, background-color 0.1s ease;
+  gap: 16px;
+}
+
+.transaction-list li:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+  background-color: #fafafa;
+}
+
+.transaction-list li.income {
+  border-right-color: var(--color-income);
+}
+.transaction-list li.expense {
+  border-right-color: var(--color-expense);
+}
+
+/* Left side: Description, Category, Date */
+.transaction-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-right: 10px;
+  word-break: break-all;
+}
+
+.transaction-info .description {
+  font-weight: 500;
+  font-size: 1.05rem;
+  color: var(--color-text);
+}
+
+.transaction-info .meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.transaction-info .meta .category {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-primary);
+  background-color: rgba(52, 152, 219, 0.1);
+  padding: 3px 8px;
+  border-radius: 12px;
+  text-transform: capitalize;
+}
+
+.transaction-info .meta .date {
+  font-size: 0.8rem;
+  color: var(--color-text-light);
+}
+
+/* Right side: Amount, Delete Button */
+.transaction-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.transaction-actions .amount {
+  font-weight: 600;
+  font-size: 1.15rem;
+  white-space: nowrap;
+  min-width: 80px;
+  text-align: right;
+}
+
+.transaction-list li.income .amount {
+  color: var(--color-income);
+}
+.transaction-list li.expense .amount {
+  color: var(--color-expense);
+}
+
+.delete-btn {
+  /* Hidden by default: no background, no pointer events, invisible */
+  background-color: transparent;
+  color: var(--color-delete);
+  border: 1px solid transparent;
+  padding: 6px;
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.16s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: none;
+  opacity: 0;
+  pointer-events: none;
+}
+ 
+ /* Reveal the button when the list item is hovered, or when the button itself is focused (keyboard) */
+ .transaction-list li:hover .delete-btn,
+ .delete-btn:focus {
+  opacity: 1;
+  pointer-events: auto;
+  background-color: var(--color-delete);
+  color: #fff;
+  border-color: transparent;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(192, 57, 43, 0.16);
+ }
+ 
+ .delete-btn:hover {
+  transform: scale(1.12);
+  background-color: #a82f20;
+  box-shadow: 0 6px 16px rgba(168, 47, 32, 0.2);
+ }
+ 
+ .delete-btn:active {
+  transform: scale(0.95);
+ }
+ 
+ .delete-btn svg {
+  width: 14px;
+  height: 14px;
+  display: block;
+  color: inherit;
+ }
+/* --- 8. Expense Chart Styling --- */
+.expense-chart-container.empty {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.expense-chart-container.empty p {
+  color: var(--color-text-light);
+  font-size: 0.9rem;
+  margin-top: 10px;
+}
+
+.recharts-legend-item-text {
+  text-transform: capitalize;
+}
+
+.recharts-tooltip-wrapper {
+  font-family: var(--font-family);
+  font-size: 0.9rem;
+}
+
+
+.form-error {
+  color: var(--color-delete);
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-top: 5px;
+}
+
+/* This adds a red border to the input with the error */
+.form-control .input-error {
+  border-color: var(--color-delete) !important;
+}
+
+/* This adds a red "glow" on focus for the errored input */
+.form-control .input-error:focus {
+  border-color: var(--color-delete) !important;
+  box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.2) !important;
+}
+.btn-edit {
+  /* Hidden by default: no background, no pointer events, invisible */
+  background-color: transparent;
+  color: var(--color-primary);
+  border: 1px solid transparent;
+  padding: 6px;
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.16s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: none;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Reveal the button when the list item is hovered, or when the button itself is focused (keyboard) */
+.transaction-list li:hover .btn-edit,
+.btn-edit:focus {
+  opacity: 1;
+  pointer-events: auto;
+  background-color: var(--color-primary);
+  color: #fff;
+  border-color: transparent;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.16);
+}
+
+.btn-edit:hover {
+  transform: scale(1.12);
+  background-color: var(--color-primary-dark);
+  box-shadow: 0 6px 16px rgba(41, 128, 185, 0.2);
+}
+
+.btn-edit:active {
+  transform: scale(0.95);
+}
+
+/* Container for the form buttons (Submit + Cancel) */
+.form-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+/* Make the main submit button fill remaining space */
+.form-buttons button[type="submit"] {
+  flex-grow: 1;
+}
+
+/* Style for the "Cancel" button */
+.btn-cancel {
+  width: auto;
+  padding: 0 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+  background-color: var(--color-border);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.btn-cancel:hover {
+  background-color: #bdc3c7; /* Darker grey */
+}
+
+/* --- 9. Professional Dashboard Layout --- */
+
+/* This applies only to large screens (laptops/desktops) */
+@media (min-width: 992px) {
+  
+  /* Widen the app container to fit 3 columns */
+  .app-container {
+    max-width: 1400px;
+  }
+
+  main {
+    display: grid;
+    grid-template-columns: 1fr 450px 1fr;
+    align-items: flex-start;
+    gap: 24px;
+  }
+
+  .dashboard-col-1,
+  .dashboard-col-2,
+  .dashboard-col-3 {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .dashboard-col-3 .transaction-list {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; 
+  }
+
+  .dashboard-col-3 .transaction-list ul {
+    flex-grow: 1;
+  }
+}
+
+/* --- 11. Analysis Button & Modal --- */
+
+.btn-analyze {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background-color: #9b59b6;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-analyze:hover {
+  background-color: #8e44ad;
+}
+
+/* Modal styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.modal-content {
+  background: var(--color-surface);
+  padding: 32px;
+  border-radius: var(--border-radius);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 750px;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+  animation: modal-fade-in 0.3s ease-out;
+}
+
+@keyframes modal-fade-in {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.modal-content h2 {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 24px;
+  font-size: 1.75rem;
+  color: var(--color-text);
+}
+
+.modal-content h3 {
+  margin-top: 24px;
+  margin-bottom: 12px;
+  font-size: 1.25rem;
+  color: var(--color-primary);
+  border-bottom: 2px solid var(--color-border);
+  padding-bottom: 8px;
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-light);
+  padding: 8px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.modal-close-btn:hover {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.modal-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  padding: 40px 20px;
+  color: var(--color-text-light);
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.modal-analysis {
+  line-height: 1.8;
+  color: var(--color-text);
+  font-size: 0.95rem;
+}
+
+.modal-analysis p {
+  margin: 12px 0;
+  color: var(--color-text);
+}
+
+.modal-analysis strong {
+  color: var(--color-text);
+  font-weight: 700;
+}
+
+.modal-analysis ul {
+  margin: 16px 0;
+  padding-left: 28px;
+  list-style: disc;
+}
+
+.modal-analysis li {
+  margin: 8px 0;
+  color: var(--color-text);
+}
+
+.modal-error {
+  background-color: rgba(231, 76, 60, 0.1);
+  border-left: 4px solid var(--color-delete);
+  padding: 16px;
+  border-radius: 4px;
+  margin: 16px 0;
+  color: var(--color-delete);
+}
+
+
+/* --- 13. Auth & Loader Styles --- */
+.global-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+}
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.auth-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+.auth-container {
+  width: 100%;
+  max-width: 400px;
+}
+.auth-form {
+  background: var(--color-surface);
+  border-radius: var(--border-radius);
+  padding: 30px;
+  box-shadow: var(--shadow-medium);
+}
+.auth-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.auth-error {
+  text-align: center;
+  margin-bottom: 10px;
+}
+.auth-toggle {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--color-text-light);
+}
+.auth-toggle span {
+  color: var(--color-primary);
+  cursor: pointer;
+  font-weight: 500;
+}
+.auth-toggle span:hover {
+  text-decoration: underline;
+}
+
+.logout-btn {
+  position: relative;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow-light);
+}
+
+.logout-btn:hover {
+  background-color: var(--color-delete);
+  color: #ffffff;
+  border-color: var(--color-delete);
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+}
+
+.logout-btn:active {
+  transform: scale(0.95);
+}
+
+.logout-btn svg {
+  transition: transform 0.3s ease;
+  color: inherit;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  width: 20px;
+  height: 20px;
+  display: block;
+  flex-shrink: 0;
+}
+
+.logout-btn:hover svg {
+  transform: translateX(2px);
+}
+/* --- 14. Budget Manager Styles --- */
+
+/* Make the label and input on the same line */
+.budget-label {
+  flex-grow: 1; /* Make label take up space */
+}
+.form-control .budget-label {
+  margin-bottom: 0; /* Override default */
+}
+.transaction-form .form-control {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+/* Make the budget input smaller */
+.transaction-form .form-control input[id^="budgets."] {
+  width: 120px;
+  flex-shrink: 0;
+  text-align: right;
+  color: var(--color-text) !important;
+  -webkit-text-fill-color: var(--color-text) !important;
+}
+
+.transaction-form .form-control input[id^="budgets."]:focus {
+  color: var(--color-text) !important;
+  -webkit-text-fill-color: var(--color-text) !important;
+}
+
+.btn-save-budget {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  /* A new color */
+  background-color: var(--color-income);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.btn-save-budget:hover {
+  background-color: #27ae60;
+}
+
+/* --- 15. Budget Progress Styles --- */
+.budget-progress-container {
+  /* Reuse card style */
+  background: var(--color-surface);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  box-shadow: var(--shadow-medium);
+}
+
+.budget-progress-container h3 {
+  font-size: 1.25rem;
+  border-bottom: 2px solid var(--color-border);
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.budget-progress-container.empty p {
+  font-size: 0.9rem;
+  color: var(--color-text-light);
+  text-align: center;
+}
+
+.budget-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px; /* Space between each budget item */
+}
+
+.budget-item-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.budget-item-category {
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.budget-item-amount {
+  font-size: 0.9rem;
+  color: var(--color-text-light);
+}
+
+.progress-track {
+  width: 100%;
+  height: 10px;
+  background-color: var(--color-bg);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: var(--color-primary);
+  border-radius: 5px;
+  transition: width 0.5s ease-out;
+}
+
+.progress-bar.warning {
+  background-color: #f39c12; /* Orange */
+}
+.progress-bar.danger {
+  background-color: var(--color-expense); /* Red */
+}
+
+/* --- 16. Date Filter Styles --- */
+.date-filter-container {
+  background: var(--color-surface);
+  border-radius: var(--border-radius);
+  padding: 12px;
+  box-shadow: var(--shadow-medium);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.date-filter-btn {
+  flex: 1;
+  padding: 10px 16px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+  position: relative;
+}
+
+.date-filter-btn:hover:not(.active) {
+  background-color: var(--color-surface);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-light);
+}
+
+.date-filter-btn.active {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  color: #ffffff;
+  border-color: var(--color-primary);
+  box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+  font-weight: 600;
+}
+
+.date-filter-btn.active:hover {
+  background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
+  transform: translateY(-1px);
+}
+
+.date-filter-btn:active {
+  transform: translateY(0);
+}
+
+/* Dark mode adjustments for date filter */
+body.dark .date-filter-btn {
+  background-color: var(--color-bg);
+}
+
+body.dark .date-filter-btn:hover:not(.active) {
+  background-color: var(--color-surface);
+}
+
+body.dark .date-filter-btn.active {
+  background: linear-gradient(135deg, #2980b9 0%, #3498db 100%);
+}
