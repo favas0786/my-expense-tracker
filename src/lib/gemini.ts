@@ -3,10 +3,9 @@ import {
   HarmCategory,
   HarmBlockThreshold,
 } from "@google/generative-ai";
-import type { Transaction } from "../types"; // Import our Transaction type
- // Import our Transaction type
+import type { Transaction } from "../types"; 
 
-// Get the API key from the .env file
+
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 
 if (!API_KEY) {
@@ -15,14 +14,12 @@ if (!API_KEY) {
 
 const genAI = new GoogleGenerativeAI(API_KEY);
 
-// Set up the model
+
 const model = genAI.getGenerativeModel({
-  // --- THIS IS THE FIX ---
-  model: "gemini-2.5-flash-preview-09-2025", // Was "gemini-1.5-flash"
-  // --- END OF FIX ---
+  model: "gemini-2.5-flash-preview-09-2025",
+ 
 });
 
-// Configuration to block harmful content
 const generationConfig = {
   temperature: 0.9,
   topK: 1,
@@ -37,9 +34,7 @@ const safetySettings = [
   { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
 ];
 
-/**
- * Takes a list of transactions and returns an AI-powered analysis.
- */
+
 export async function analyzeSpending(
   transactions: Transaction[]
 ): Promise<string> {
@@ -47,7 +42,6 @@ export async function analyzeSpending(
     return "There are no transactions to analyze. Please add some expenses.";
   }
 
-  // Convert transaction data to a simple string for the prompt
   const transactionsString = transactions
     .map(
       (tx) =>

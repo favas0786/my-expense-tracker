@@ -1,14 +1,14 @@
 import { useForm, type Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  type Transaction, // <-- NEW
+  type Transaction, 
   categories,
   transactionFormSchema,
   type TransactionFormData,
 } from "../types";
-import { useEffect } from "react"; // <-- NEW
+import { useEffect } from "react"; 
 
-// --- 1. NEW: Update Props ---
+
 interface TransactionFormProps {
   onAddTransaction: (data: TransactionFormData) => void;
   onUpdateTransaction: (data: TransactionFormData) => void;
@@ -22,26 +22,25 @@ function TransactionForm({
   onCancelEdit,
   transactionToEdit,
 }: TransactionFormProps) {
-  // --- 2. NEW: Check if we are in edit mode ---
+  
   const isEditMode = !!transactionToEdit;
 
   const {
     register,
     handleSubmit,
-    reset, // We need reset to pre-fill the form
-    formState: { errors, isSubmitting }, // Get submitting state
+    reset, 
+    formState: { errors, isSubmitting }, 
   } = useForm<TransactionFormData>({
-    // Cast resolver to the form's field type to satisfy TypeScript
+    
     resolver: zodResolver(transactionFormSchema) as Resolver<TransactionFormData>,
   });
 
-  // --- 3. NEW: Pre-fill form when edit mode starts/stops ---
   useEffect(() => {
     if (transactionToEdit) {
-      // If we are editing, fill form with that data
+     
       reset(transactionToEdit);
     } else {
-      // If we are adding, reset to default
+      
       reset({
         description: "",
         amount: 0,
@@ -50,19 +49,19 @@ function TransactionForm({
     }
   }, [transactionToEdit, reset]);
 
-  // --- 4. NEW: Unified onSubmit handler ---
+
   const onSubmit = (data: TransactionFormData) => {
     if (isEditMode) {
       onUpdateTransaction(data);
     } else {
       onAddTransaction(data);
     }
-    // `reset` is handled by the useEffect now
+   
   };
 
   return (
     <form className="transaction-form" onSubmit={handleSubmit(onSubmit)}>
-      {/* 5. NEW: Dynamic Title */}
+     
       <h3>{isEditMode ? "Edit Transaction" : "Add New Transaction"}</h3>
       
       <div className="form-control">
@@ -115,7 +114,7 @@ function TransactionForm({
         )}
       </div>
       
-      {/* 6. NEW: Dynamic Buttons */}
+     
       <div className="form-buttons">
         <button type="submit" disabled={isSubmitting}>
           {isEditMode ? "Update Transaction" : "Add Transaction"}

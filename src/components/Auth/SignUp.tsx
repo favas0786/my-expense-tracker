@@ -3,7 +3,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebaseConfig';
 
 interface SignUpProps {
-  onToggleForm: () => void; // Function to switch to Login
+  onToggleForm: () => void; 
 }
 
 export function SignUp({ onToggleForm }: SignUpProps) {

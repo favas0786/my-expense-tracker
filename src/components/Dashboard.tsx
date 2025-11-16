@@ -11,7 +11,6 @@ import type {
 import { BrainCircuit, LogOut } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 
-// Import Firebase features
 import { db, auth } from "../firebaseConfig";
 import {
   collection,
@@ -32,7 +31,6 @@ import { BudgetManager } from "./BudgetManager";
 import { BudgetProgress } from "./BudgetProgress";
 import { useAuth } from "../hooks/useAuth";
 
-// Import all components
 import TransactionList from "./TransactionList";
 import TransactionForm from "./TransactionForm";
 import Balance from "./Balance";
@@ -40,7 +38,7 @@ import { ExpenseChart } from "./ExpenseChart";
 import { AnalysisModal } from "./AnalysisModal";
 import { analyzeSpending } from "../lib/gemini";
 
-// Reducer for transaction state
+
 const transactionReducer = (
   state: AppState,
   action: TransactionAction
@@ -72,45 +70,45 @@ const transactionReducer = (
   }
 };
 
-// Initial state for the reducer
+
 const initialState: AppState = {
   transactions: [],
   editingTransaction: null,
   isLoading: true,
 };
 
-// Main Dashboard Component
+
 export function Dashboard() {
   const { user } = useAuth();
   const [state, dispatch] = useReducer(transactionReducer, initialState);
 
-  // State for Budgets
+
   const [budgets, setBudgets] = useState<BudgetMap>({});
   const [budgetDocId, setBudgetDocId] = useState<string | null>(null);
   const [isBudgetLoading, setIsBudgetLoading] = useState(false);
 
-  // AI Modal state
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [analysis, setAnalysis] = useState<string | null>(null);
   const [analysisError, setAnalysisError] = useState<string | null>(null);
   const [isLoadingAnalysis, setIsLoadingAnalysis] = useState(false);
 
-  // Date filter state
+
   const [dateRange, setDateRange] = useState<DateRange>(getThisMonthRange());
 
-  // Real-time Firebase Data Listener for transactions
+  
   useEffect(() => {
     if (!user) return;
 
     dispatch({ type: "SET_LOADING", payload: true });
 
-    // This query now filters by date and orders them
+   
     const transactionsCollectionRef = query(
       collection(db, "users", user.uid, "transactions"),
-      // --- NEW: Filter by date range ---
+      
       where("date", ">=", dateRange.startDate.toISOString()),
       where("date", "<=", dateRange.endDate.toISOString()),
-      orderBy("date", "desc") // <-- Order by date (newest first)
+      orderBy("date", "desc") 
     );
 
     const unsubscribe = onSnapshot(
@@ -129,8 +127,7 @@ export function Dashboard() {
       },
       (error) => {
         console.error("Error fetching transactions:", error);
-        // This is a common error! You might need to create an index.
-        // The error message in your console will give you a link to create it.
+        
         dispatch({ type: "SET_LOADING", payload: false });
       }
     );
@@ -138,7 +135,7 @@ export function Dashboard() {
     return () => unsubscribe();
   }, [user, dateRange]);
 
-  // Effect to load budgets for the current month
+ 
   useEffect(() => {
     if (!user) return;
 

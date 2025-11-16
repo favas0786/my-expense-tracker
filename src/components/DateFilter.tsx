@@ -15,7 +15,7 @@ export function DateFilter({ onDateRangeChange, currentRange }: DateFilterProps)
   const lastMonth = getLastMonthRange();
   const allTime = getAllTimeRange();
 
-  // Helper function to check if two date ranges are equal
+ 
   const isRangeEqual = (range1: DateRange, range2: DateRange) => {
     return (
       range1.startDate.getTime() === range2.startDate.getTime() &&

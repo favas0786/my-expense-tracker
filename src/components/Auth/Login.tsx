@@ -4,7 +4,7 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebaseConfig';
 
 interface LoginProps {
-  onToggleForm: () => void; // Function to switch to Sign Up
+  onToggleForm: () => void; 
 }
 
 export function Login({ onToggleForm }: LoginProps) {
@@ -17,7 +17,7 @@ export function Login({ onToggleForm }: LoginProps) {
     setError(null);
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      // Auth state change will be caught by useAuth hook
+      
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);

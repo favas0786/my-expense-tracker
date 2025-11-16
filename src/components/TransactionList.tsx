@@ -1,11 +1,11 @@
 import type { Transaction } from "../types";
-import { Trash2, Pencil } from "lucide-react"; // 1. Import Pencil icon
+import { Trash2, Pencil } from "lucide-react"; 
 
 const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString();
 };
 
-// 2. NEW: Add onStartEdit prop
+
 interface TransactionListProps {
   transactions: Transaction[];
   onDeleteTransaction: (id: string) => void;
@@ -15,7 +15,7 @@ interface TransactionListProps {
 function TransactionList({
   transactions,
   onDeleteTransaction,
-  onStartEdit, // 3. Get the new prop
+  onStartEdit, 
 }: TransactionListProps) {
   return (
     <div className="transaction-list">
@@ -43,8 +43,6 @@ function TransactionList({
               <span className="amount">
                 {tx.amount < 0 ? "-" : "+"}${Math.abs(tx.amount).toFixed(2)}
               </span>
-              
-              {/* 4. NEW: Edit Button */}
               <button
                 type="button"
                 className="btn-edit"

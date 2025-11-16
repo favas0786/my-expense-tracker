@@ -6,7 +6,6 @@ interface BudgetProgressProps {
   budgets: BudgetMap;
 }
 
-// A helper to format numbers as currency
 const formatCurrency = (amount: number) => {
   return `$${amount.toFixed(0)}`;
 };
@@ -16,11 +15,10 @@ export function BudgetProgress({
   budgets,
 }: BudgetProgressProps) {
 
-  // 1. Calculate total spending per category for the current period
-  // We use useMemo so this only recalculates when transactions change
+
   const spendingMap = useMemo(() => {
     return transactions
-      .filter((tx) => tx.amount < 0) // Only expenses
+      .filter((tx) => tx.amount < 0) 
       .reduce((acc, tx) => {
         const amount = Math.abs(tx.amount);
         acc[tx.category] = (acc[tx.category] || 0) + amount;
@@ -28,7 +26,6 @@ export function BudgetProgress({
       }, {} as { [key in TransactionCategory]?: number });
   }, [transactions]);
 
-  // 2. Filter to get only categories that have a budget set
   const budgetedCategories = categories.filter(
     (cat) => budgets[cat] && budgets[cat]! > 0
   );
@@ -50,10 +47,9 @@ export function BudgetProgress({
           const budgetAmount = budgets[category] || 0;
           const spentAmount = spendingMap[category] || 0;
           
-          // Calculate percentage, capping at 100%
+         
           const percentage = Math.min((spentAmount / budgetAmount) * 100, 100);
-          
-          // Determine color
+    
           let progressBarClass = "progress-bar";
           if (percentage > 90) progressBarClass += " danger";
           else if (percentage > 70) progressBarClass += " warning";
@@ -62,7 +58,7 @@ export function BudgetProgress({
             <div className="budget-item" key={category}>
               <div className="budget-item-header">
                 <span className="budget-item-category">
-                  {/* Capitalize first letter */}
+               
                   {category.charAt(0).toUpperCase() + category.slice(1)}
                 </span>
                 <span className="budget-item-amount">

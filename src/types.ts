@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-// --- Categories Constant ---
+
 export const categories = [
   "food",
   "groceries",
@@ -10,7 +10,7 @@ export const categories = [
   "other",
 ] as const;
 
-// --- Transaction Types ---
+
 export type TransactionCategory = (typeof categories)[number];
 
 export interface Transaction {
@@ -23,7 +23,6 @@ export interface Transaction {
 
 export type NewTransaction = Omit<Transaction, "id">;
 
-// --- Zod Schema & Form Type ---
 export const transactionFormSchema = z.object({
   description: z.string().min(3, {
     message: "Description must be at least 3 characters.",
@@ -43,15 +42,12 @@ export const transactionFormSchema = z.object({
 
 export type TransactionFormData = z.infer<typeof transactionFormSchema>;
 
-// --- 1. NEW: AppState for real-time data ---
 export interface AppState {
   transactions: Transaction[];
   editingTransaction: Transaction | null;
   isLoading: boolean; // For loading state
 }
 
-// --- 2. NEW: Reducer Actions for real-time state ---
-// This action will set the state from our Firebase listener
 type SetTransactionsAction = {
   type: "SET_TRANSACTIONS";
   payload: Transaction[];
@@ -62,26 +58,23 @@ type SetLoadingAction = {
   payload: boolean;
 };
 
-// --- NEW: Budget Types ---
 
-// This defines the shape of our budget object
-// e.g., { food: 300, housing: 1000, transport: 100 }
 export type BudgetMap = {
   [category in TransactionCategory]?: number;
 };
-// --- NEW: Date Range Type ---
+
 export type DateRange = {
   startDate: Date;
   endDate: Date;
 };
-// This is the shape of the document we'll save in Firestore
+
 export interface BudgetDocument {
-  id: string; // The Firestore document ID
+  id: string; 
   budgets: BudgetMap;
-  month: string; // e.g., "2025-11" (YYYY-MM format)
+  month: string; 
 }
 
-// These actions are for local UI state (editing)
+
 type StartEditAction = {
   type: "START_EDIT";
   payload: string; // id
@@ -91,8 +84,7 @@ type CancelEditAction = {
   type: "CANCEL_EDIT";
 };
 
-// We no longer need ADD, DELETE, UPDATE here.
-// Firestore's listener will handle it!
+
 export type TransactionAction =
   | SetTransactionsAction
   | SetLoadingAction
